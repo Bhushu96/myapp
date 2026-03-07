@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyApp — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0b0c10;--panel:#13141a;--border:#222430;--accent:#e8ff47;--accent2:#47c8ff;--text:#f0f0f0;--muted:#6b6e80;--error:#ff5c5c;--success:#47ffb2;--inp:#1a1c24}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(100px);opacity:.15;animation:drift 12s ease-in-out infinite alternate;pointer-events:none;z-index:0}
+    body::before{width:500px;height:500px;background:var(--accent);top:-150px;left:-150px}
+    body::after{width:400px;height:400px;background:var(--accent2);bottom:-100px;right:-100px;animation-delay:-6s}
+    @keyframes drift{from{transform:translate(0,0)}to{transform:translate(60px,40px)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+    @keyframes popIn{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+
+    .wrap{position:relative;z-index:1;width:100%;max-width:460px;padding:16px}
+    .brand{text-align:center;margin-bottom:28px;animation:fadeUp .5s both}
+    .logo{display:inline-flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem}
+    .dot{width:11px;height:11px;background:var(--accent);border-radius:50%;box-shadow:0 0 14px var(--accent)}
+    .brand p{margin-top:6px;color:var(--muted);font-size:.87rem}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:36px 32px;box-shadow:0 24px 80px rgba(0,0,0,.5);animation:fadeUp .6s .1s both}
+    .tabs{display:flex;background:var(--inp);border-radius:10px;padding:4px;margin-bottom:28px;gap:4px}
+    .tab{flex:1;padding:9px;border:none;background:transparent;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;border-radius:8px;cursor:pointer;transition:all .25s}
+    .tab.on{background:var(--accent);color:#0b0c10;box-shadow:0 4px 16px rgba(232,255,71,.3)}
+    .form{display:none;flex-direction:column;gap:16px}
+    .form.on{display:flex}
+    .grp{display:flex;flex-direction:column;gap:6px}
+    .grp label{font-size:.77rem;font-weight:500;color:var(--muted);letter-spacing:.6px;text-transform:uppercase}
+    .row2{display:flex;gap:12px}
+    .row2 .grp{flex:1}
+    .inp-w{position:relative}
+    .inp-w input{width:100%;padding:12px 40px 12px 38px;background:var(--inp);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s}
+    .inp-w input.bare{padding-left:14px}
+    .inp-w input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,255,71,.1)}
+    .inp-w input::placeholder{color:var(--muted)}
+    .ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.9rem;pointer-events:none}
+    .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:.82rem;font-family:inherit;transition:color .2s}
+    .eye:hover{color:var(--accent)}
+    .sbar{display:flex;gap:4px;margin-top:5px}
+    .seg{height:3px;flex:1;border-radius:2px;background:var(--border);transition:background .3s}
+    .slbl{font-size:.73rem;color:var(--muted);margin-top:3px}
+    .between{display:flex;justify-content:space-between;align-items:center;margin-top:-4px}
+    .lnk{font-size:.82rem;color:var(--accent2);background:none;border:none;cursor:pointer;padding:0;font-family:inherit;text-decoration:none;transition:color .2s}
+    .lnk:hover{color:var(--accent)}
+    .ckrow{display:flex;align-items:flex-start;gap:10px}
+    .ckrow input[type=checkbox]{width:15px;height:15px;margin-top:3px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+    .ckrow label{font-size:.82rem;color:var(--muted);line-height:1.5;cursor:pointer}
+    .ckrow label a{color:var(--accent2);text-decoration:none}
+    .btn{width:100%;padding:13px;background:var(--accent);color:#0b0c10;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .15s,box-shadow .2s;box-shadow:0 4px 20px rgba(232,255,71,.25);margin-top:4px;position:relative;overflow:hidden}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(232,255,71,.4)}
+    .btn.spin{pointer-events:none;color:transparent}
+    .btn.spin::after{content:'';position:absolute;width:20px;height:20px;border:2.5px solid #0b0c10;border-top-color:transparent;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:spin .7s linear infinite}
+    .div{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.78rem}
+    .div::before,.div::after{content:'';flex:1;height:1px;background:var(--border)}
+    .soc{display:flex;gap:10px}
+    .sbtn{flex:1;padding:10px;background:var(--inp);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:border-color .2s,background .2s}
+    .sbtn:hover{border-color:var(--muted);background:#1e2029}
+    .sbtn svg{width:16px;height:16px;flex-shrink:0}
+    .err{font-size:.75rem;color:var(--error);margin-top:3px;display:none}
+    .err.on{display:block}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--panel);border:1px solid var(--border);color:var(--text);padding:12px 20px;border-radius:12px;font-size:.9rem;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:9999;display:flex;align-items:center;gap:10px;white-space:nowrap}
+    .toast.on{transform:translateX(-50%) translateY(0)}
+    /* Dashboard */
+    #dash{display:none}
+    #dash.on{display:block;animation:fadeUp .5s both}
+    .hero{text-align:center;padding:8px 0 24px;border-bottom:1px solid var(--border);margin-bottom:24px}
+    .avatar{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:#0b0c10;margin:0 auto 16px;box-shadow:0 0 0 4px rgba(232,255,71,.15),0 0 40px rgba(232,255,71,.2);animation:popIn .5s both}
+    .greet{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;line-height:1.2;margin-bottom:6px}
+    .greet span{color:var(--accent)}
+    .demail{color:var(--muted);font-size:.88rem}
+    .badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:.78rem;font-weight:500}
+    .bg{background:rgba(71,255,178,.1);color:var(--success);border:1px solid rgba(71,255,178,.25)}
+    .by{background:rgba(232,255,71,.07);color:var(--accent);border:1px solid rgba(232,255,71,.2);font-family:monospace;font-size:.72rem}
+    .dinfo{background:var(--inp);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+    .drow{display:flex;justify-content:space-between;align-items:center}
+    .drow .dl{font-size:.77rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+    .drow .dv{font-size:.88rem;color:var(--text);font-weight:500}
+    .obtn{width:100%;padding:11px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:600;transition:border-color .2s,color .2s,background .2s}
+    .obtn:hover{border-color:var(--error);color:var(--error);background:rgba(255,92,92,.05)}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <div class="logo"><span class="dot"></span> MyApp</div>
+    <p>Powered by Firebase</p>
+  </div>
+
+  <!-- AUTH -->
+  <div class="card" id="authCard">
+    <div class="tabs">
+      <button class="tab on" id="tabLogin" onclick="goTab('login')">Login</button>
+      <button class="tab" id="tabReg" onclick="goTab('reg')">Register</button>
+    </div>
+
+    <!-- LOGIN -->
+    <form class="form on" id="fLogin" onsubmit="doLogin(event)">
+      <div class="grp">
+        <label>Email Address</label>
+        <div class="inp-w">
+          <span class="ico">✉</span>
+          <input type="text" id="lEml" placeholder="you@example.com" autocomplete="username"/>
+        </div>
+        <div class="err" id="lEmlE">Please enter your email.</div>
+      </div>
+      <div class="grp">
+        <label>Password</label>
+        <div class="inp-w">
+          <span class="ico">🔒</span>
+          <input type="password" id="lPw" placeholder="••••••••" autocomplete="current-password"/>
+          <button type="button" class="eye" onclick="toggleEye('lPw',this)">Show</button>
+        </div>
+        <div class="err" id="lPwE">Please enter your password.</div>
+      </div>
+      <div class="between">
+        <label style="display:flex;gap:7px;align-items:center;cursor:pointer;font-size:.82rem;color:var(--muted)">
+          <input type="checkbox" style="accent-color:var(--accent)"/> Remember me
+        </label>
+        <button type="button" class="lnk" onclick="doForgot()">Forgot password?</button>
+      </div>
+      <button type="submit" class="btn" id="lBtn">Sign In</button>
+      <div class="div">or continue with</div>
+      <div class="soc">
+        <button type="button" class="sbtn" onclick="doGoogle()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Google
+        </button>
+        <button type="button" class="sbtn" onclick="doGithub()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </button>
+      </div>
+    </form>
+
+    <!-- REGISTER -->
+    <form class="form" id="fReg" onsubmit="doRegister(event)">
+      <div class="row2">
+        <div class="grp">
+          <label>First Name</label>
+          <div class="inp-w">
+            <span class="ico">👤</span>
+            <input type="text" id="rFirst" placeholder="John" autocomplete="given-name"/>
+          </div>
+          <div class="err" id="rFirstE">Required.</div>
+        </div>
+        <div class="grp">
+          <label>Last Name</label>
+          <div class="inp-w">
+            <input type="text" id="rLast" placeholder="Doe" class="bare" autocomplete="family-name"/>
+          </div>
+          <div class="err" id="rLastE">Required.</div>
+        </div>
+      </div>
+      <div class="grp">
+        <label>Email Address</label>
+        <div class="inp-w">
+          <span class="ico">✉</span>
+          <input type="text" id="rEml" placeholder="you@example.com" autocomplete="off"/>
+        </div>
+        <div class="err" id="rEmlE">Enter a valid email.</div>
+      </div>
+      <div class="grp">
+        <label>Password</label>
+        <div class="inp-w">
+          <span class="ico">🔒</span>
+          <input type="password" id="rPw" placeholder="Min. 6 characters" oninput="checkStr(this.value)" autocomplete="new-password"/>
+          <button type="button" class="eye" onclick="toggleEye('rPw',this)">Show</button>
+        </div>
+        <div class="sbar"><div class="seg" id="s1"></div><div class="seg" id="s2"></div><div class="seg" id="s3"></div><div class="seg" id="s4"></div></div>
+        <div class="slbl" id="sLbl"></div>
+        <div class="err" id="rPwE">At least 6 characters.</div>
+      </div>
+      <div class="grp">
+        <label>Confirm Password</label>
+        <div class="inp-w">
+          <span class="ico">🔒</span>
+          <input type="password" id="rPwC" placeholder="••••••••" autocomplete="new-password"/>
+          <button type="button" class="eye" onclick="toggleEye('rPwC',this)">Show</button>
+        </div>
+        <div class="err" id="rPwCE">Passwords do not match.</div>
+      </div>
+      <div class="ckrow">
+        <input type="checkbox" id="ckTerms"/>
+        <label for="ckTerms">I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></label>
+      </div>
+      <div class="err" id="ckE">You must accept the terms.</div>
+      <button type="submit" class="btn" id="rBtn">Create Account</button>
+    </form>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="card" id="dash">
+    <div class="hero">
+      <div class="avatar" id="dAvatar">?</div>
+      <div class="greet">Hello, <span id="dFirst">there</span>! 👋</div>
+      <div class="demail" id="dEmail">—</div>
+      <div class="badges">
+        <span class="badge bg">✓ Verified</span>
+        <span class="badge by" id="dUid">uid:...</span>
+      </div>
+    </div>
+    <div class="dinfo">
+      <div class="drow"><span class="dl">Full Name</span><span class="dv" id="dName">—</span></div>
+      <div class="drow"><span class="dl">Email</span><span class="dv" id="dEmail2">—</span></div>
+      <div class="drow"><span class="dl">Status</span><span class="dv" style="color:var(--success)">Active ●</span></div>
+    </div>
+    <button class="obtn" onclick="doLogout()">← Sign Out</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="tIcon">✓</span><span id="tMsg">Done!</span></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// Firebase config (base64 encoded to prevent proxy modification)
+const cfg = JSON.parse(atob("eyJhcGlLZXkiOiJBSXphU3lCczJwZTZiTGRfak03MHE0QjIzRG5fcGN5eDVkVjlnOGMiLCJhdXRoRG9tYWluIjoiaW5zaWdodGZvcmdlYWktZGY3OGIuZmlyZWJhc2VhcHAuY29tIiwicHJvamVjdElkIjoiaW5zaWdodGZvcmdlYWktZGY3OGIiLCJzdG9yYWdlQnVja2V0IjoiaW5zaWdodGZvcmdlYWktZGY3OGIuZmlyZWJhc2VzdG9yYWdlLmFwcCIsIm1lc3NhZ2luZ1NlbmRlcklkIjoiNDQzMDIyNjEzNjA4IiwiYXBwSWQiOiIxOjQ0MzAyMjYxMzYwODp3ZWI6MzdjYjZlNzA0ZmVmZGRhMDk3YWZkZCJ9"));
+
+const app  = initializeApp(cfg);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// Auth state
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    let fn = '';
+    try { const s = await getDoc(doc(db,'users',user.uid)); if(s.exists()) fn = s.data().firstName||''; } catch(e){}
+    if (!fn) fn = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
+    showDash(user, fn);
+  } else {
+    document.getElementById('authCard').style.display = 'block';
+    document.getElementById('dash').classList.remove('on');
+    document.getElementById('dash').style.display = 'none';
+  }
+});
+
+// REGISTER
+window.doRegister = async e => {
+  e.preventDefault();
+  clearE();
+  const fn  = g('rFirst').value.trim();
+  const ln  = g('rLast').value.trim();
+  const em  = g('rEml').value.trim();
+  const pw  = g('rPw').value;
+  const pwc = g('rPwC').value;
+  const ok2 = g('ckTerms').checked;
+  let ok = true;
+  if (!fn)  { se('rFirstE'); ok=false; }
+  if (!ln)  { se('rLastE'); ok=false; }
+  if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { se('rEmlE'); ok=false; }
+  if (!pw || pw.length<6) { se('rPwE'); ok=false; }
+  if (pw !== pwc) { se('rPwCE'); ok=false; }
+  if (!ok2) { se('ckE'); ok=false; }
+  if (!ok) return;
+  const btn = g('rBtn'); btn.classList.add('spin');
+  try {
+    const cr = await createUserWithEmailAndPassword(auth, em, pw);
+    await updateProfile(cr.user, { displayName: fn+' '+ln });
+    try { await setDoc(doc(db,'users',cr.user.uid),{firstName:fn,lastName:ln,email:em,uid:cr.user.uid,createdAt:serverTimestamp()}); } catch(fe){console.warn('fs:',fe.message);}
+    toast('Welcome, '+fn+'! Account created 🎉','🎉');
+  } catch(err) {
+    console.error(err.code, err.message);
+    toast(friendly(err.code),'✗');
+    se('rEmlE', friendly(err.code));
+  }
+  btn.classList.remove('spin');
+};
+
+// LOGIN
+window.doLogin = async e => {
+  e.preventDefault();
+  clearE();
+  const em = g('lEml').value.trim();
+  const pw = g('lPw').value;
+  if (!em) { se('lEmlE'); return; }
+  if (!pw) { se('lPwE'); return; }
+  const btn = g('lBtn'); btn.classList.add('spin');
+  try { await signInWithEmailAndPassword(auth, em, pw); }
+  catch(err) { console.error(err.code); toast(friendly(err.code),'✗'); se('lEmlE',friendly(err.code)); btn.classList.remove('spin'); }
+};
+
+// GOOGLE
+window.doGoogle = async () => {
+  try {
+    const cr = await signInWithPopup(auth, new GoogleAuthProvider());
+    const rf = doc(db,'users',cr.user.uid);
+    if(!(await getDoc(rf)).exists()){
+      const [f,...r]=(cr.user.displayName||'').split(' ');
+      await setDoc(rf,{firstName:f||'',lastName:r.join(' ')||'',email:cr.user.email,uid:cr.user.uid,createdAt:serverTimestamp()});
+    }
+  } catch(e){ toast(friendly(e.code),'✗'); }
+};
+
+// GITHUB
+window.doGithub = async () => {
+  try {
+    const cr = await signInWithPopup(auth, new GithubAuthProvider());
+    const rf = doc(db,'users',cr.user.uid);
+    if(!(await getDoc(rf)).exists()) await setDoc(rf,{email:cr.user.email,uid:cr.user.uid,createdAt:serverTimestamp()});
+  } catch(e){ toast(friendly(e.code),'✗'); }
+};
+
+// FORGOT
+window.doForgot = async () => {
+  const em = g('lEml').value.trim();
+  if (!em) { se('lEmlE','Enter your email first.'); return; }
+  try { await sendPasswordResetEmail(auth,em); toast('Reset email sent! Check inbox 📧','📧'); }
+  catch(e){ toast(friendly(e.code),'✗'); }
+};
+
+// LOGOUT
+window.doLogout = async () => { await signOut(auth); toast('Signed out 👋','👋'); };
+
+function showDash(user, fn) {
+  g('authCard').style.display = 'none';
+  const d = g('dash'); d.style.display='block'; d.classList.add('on');
+  const full = user.displayName || fn || user.email;
+  g('dAvatar').textContent  = fn.charAt(0).toUpperCase();
+  g('dFirst').textContent   = fn;
+  g('dEmail').textContent   = user.email;
+  g('dName').textContent    = full;
+  g('dEmail2').textContent  = user.email;
+  g('dUid').textContent     = 'uid:'+user.uid.slice(0,10)+'…';
+  toast('Welcome back, '+fn+'! 👋','👋');
+}
+
+function friendly(c){
+  return({'auth/email-already-in-use':'Email already registered.','auth/invalid-email':'Invalid email.','auth/wrong-password':'Wrong password.','auth/user-not-found':'No account with this email.','auth/invalid-credential':'Wrong email or password.','auth/weak-password':'Password too short (min 6).','auth/too-many-requests':'Too many attempts. Try later.','auth/popup-closed-by-user':'Popup closed.','auth/network-request-failed':'Network error. Check connection.'})[c]||'Error: '+c;
+}
+
+function g(id){return document.getElementById(id);}
+function se(id,msg){const el=g(id);if(msg)el.textContent=msg;el.classList.add('on');}
+function clearE(){document.querySelectorAll('.err').forEach(e=>e.classList.remove('on'));}
+
+// UI helpers
+window.goTab = t => {
+  g('tabLogin').classList.toggle('on', t==='login');
+  g('tabReg').classList.toggle('on', t==='reg');
+  g('fLogin').classList.toggle('on', t==='login');
+  g('fReg').classList.toggle('on', t==='reg');
+  clearE();
+};
+window.toggleEye = (id,btn) => {
+  const f=g(id); f.type=f.type==='password'?'text':'password';
+  btn.textContent=f.type==='password'?'Show':'Hide';
+};
+window.checkStr = v => {
+  let s=0;
+  if(v.length>=6)s++;if(v.length>=10)s++;
+  if(/[A-Z]/.test(v)&&/[0-9]/.test(v))s++;
+  if(/[^A-Za-z0-9]/.test(v))s++;
+  const c=['#ff5c5c','#ffaa47','#e8ff47','#47ffb2'],l=['','Weak','Fair','Good','Strong'];
+  ['s1','s2','s3','s4'].forEach((id,i)=>g(id).style.background=i<s?c[s-1]:'var(--border)');
+  const lb=g('sLbl'); lb.textContent=v.length?l[s]:''; lb.style.color=s>0?c[s-1]:'var(--muted)';
+};
+function toast(msg,icon='✓',ms=3500){
+  const t=g('toast');g('tMsg').textContent=msg;g('tIcon').textContent=icon;
+  t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),ms);
+}
+</script>
+</body>
+</html>
