@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MyApp — Login</title>
+  <title>MyApp</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{--bg:#0b0c10;--panel:#13141a;--border:#222430;--accent:#e8ff47;--accent2:#47c8ff;--text:#f0f0f0;--muted:#6b6e80;--error:#ff5c5c;--success:#47ffb2;--inp:#1a1c24}
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-    body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(100px);opacity:.15;animation:drift 12s ease-in-out infinite alternate;pointer-events:none;z-index:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow-x:hidden}
+    body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(100px);opacity:.12;animation:drift 12s ease-in-out infinite alternate;pointer-events:none;z-index:0}
     body::before{width:500px;height:500px;background:var(--accent);top:-150px;left:-150px}
     body::after{width:400px;height:400px;background:var(--accent2);bottom:-100px;right:-100px;animation-delay:-6s}
     @keyframes drift{from{transform:translate(0,0)}to{transform:translate(60px,40px)}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
     @keyframes popIn{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
-    .wrap{position:relative;z-index:1;width:100%;max-width:460px;padding:16px}
+    .wrap{position:relative;z-index:1;width:100%;max-width:480px;padding:16px}
     .brand{text-align:center;margin-bottom:28px;animation:fadeUp .5s both}
     .logo{display:inline-flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem}
     .dot{width:11px;height:11px;background:var(--accent);border-radius:50%;box-shadow:0 0 14px var(--accent)}
@@ -44,7 +45,7 @@
     .seg{height:3px;flex:1;border-radius:2px;background:var(--border);transition:background .3s}
     .slbl{font-size:.73rem;color:var(--muted);margin-top:3px}
     .between{display:flex;justify-content:space-between;align-items:center;margin-top:-4px}
-    .lnk{font-size:.82rem;color:var(--accent2);background:none;border:none;cursor:pointer;padding:0;font-family:inherit;text-decoration:none;transition:color .2s}
+    .lnk{font-size:.82rem;color:var(--accent2);background:none;border:none;cursor:pointer;padding:0;font-family:inherit;transition:color .2s}
     .lnk:hover{color:var(--accent)}
     .ckrow{display:flex;align-items:flex-start;gap:10px}
     .ckrow input[type=checkbox]{width:15px;height:15px;margin-top:3px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
@@ -64,28 +65,72 @@
     .err.on{display:block}
     .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--panel);border:1px solid var(--border);color:var(--text);padding:12px 20px;border-radius:12px;font-size:.9rem;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:9999;display:flex;align-items:center;gap:10px;white-space:nowrap}
     .toast.on{transform:translateX(-50%) translateY(0)}
-    /* Dashboard */
+
+    /* DASHBOARD */
     #dash{display:none}
     #dash.on{display:block;animation:fadeUp .5s both}
-    .hero{text-align:center;padding:8px 0 24px;border-bottom:1px solid var(--border);margin-bottom:24px}
-    .avatar{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:#0b0c10;margin:0 auto 16px;box-shadow:0 0 0 4px rgba(232,255,71,.15),0 0 40px rgba(232,255,71,.2);animation:popIn .5s both}
-    .greet{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;line-height:1.2;margin-bottom:6px}
+    .hero{text-align:center;padding:8px 0 20px;border-bottom:1px solid var(--border);margin-bottom:20px}
+    .avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#0b0c10;margin:0 auto 12px;box-shadow:0 0 0 4px rgba(232,255,71,.15),0 0 40px rgba(232,255,71,.2);animation:popIn .5s both}
+    .greet{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;line-height:1.2;margin-bottom:4px}
     .greet span{color:var(--accent)}
-    .demail{color:var(--muted);font-size:.88rem}
-    .badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
-    .badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:.78rem;font-weight:500}
-    .bg{background:rgba(71,255,178,.1);color:var(--success);border:1px solid rgba(71,255,178,.25)}
-    .by{background:rgba(232,255,71,.07);color:var(--accent);border:1px solid rgba(232,255,71,.2);font-family:monospace;font-size:.72rem}
-    .dinfo{background:var(--inp);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
-    .drow{display:flex;justify-content:space-between;align-items:center}
-    .drow .dl{font-size:.77rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-    .drow .dv{font-size:.88rem;color:var(--text);font-weight:500}
-    .obtn{width:100%;padding:11px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:600;transition:border-color .2s,color .2s,background .2s}
-    .obtn:hover{border-color:var(--error);color:var(--error);background:rgba(255,92,92,.05)}
+    .demail{color:var(--muted);font-size:.85rem}
+    .stats-row{display:flex;gap:10px;margin-bottom:20px}
+    .stat{flex:1;background:var(--inp);border-radius:12px;padding:14px;text-align:center;border:1px solid var(--border)}
+    .stat-n{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800}
+    .stat-l{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+    .stat.w .stat-n{color:var(--success)}
+    .stat.l .stat-n{color:var(--error)}
+    .stat.g .stat-n{color:var(--accent)}
+    .play-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0b0c10;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;transition:transform .15s,box-shadow .2s;box-shadow:0 4px 20px rgba(232,255,71,.2)}
+    .play-btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(232,255,71,.35)}
+    .obtn{width:100%;padding:11px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:600;transition:border-color .2s,color .2s}
+    .obtn:hover{border-color:var(--error);color:var(--error)}
+
+    /* SUDOKU */
+    #gameWrap{display:none}
+    #gameWrap.on{display:block;animation:fadeUp .4s both}
+    .game-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .game-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800}
+    .timer{font-family:'Syne',sans-serif;font-size:1rem;color:var(--accent);background:var(--inp);padding:6px 14px;border-radius:8px;border:1px solid var(--border)}
+    .timer.danger{color:var(--error);animation:pulse 1s infinite}
+    .sudoku-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:2px;background:var(--border);border-radius:12px;overflow:hidden;border:2px solid var(--border);margin-bottom:14px}
+    .cell{aspect-ratio:1;background:var(--inp);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .15s,color .15s;position:relative;border:none;outline:none}
+    .cell:nth-child(3n){border-right:2px solid #444}
+    .cell:nth-child(9n){border-right:none}
+    .cell[data-row="2"],.cell[data-row="5"]{border-bottom:2px solid #444}
+    .cell.given{color:var(--text);cursor:default}
+    .cell.editable{color:var(--accent2)}
+    .cell.selected{background:#1e2a3a !important}
+    .cell.highlight{background:#181e28}
+    .cell.error{color:var(--error) !important}
+    .cell.correct{color:var(--success) !important}
+    .numpad{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-bottom:14px}
+    .nk{padding:10px 4px;background:var(--inp);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .15s;text-align:center}
+    .nk:hover{border-color:var(--accent);color:var(--accent)}
+    .nk.erase{font-size:.7rem;color:var(--muted)}
+    .game-actions{display:flex;gap:8px}
+    .gbtn{flex:1;padding:10px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;transition:all .2s}
+    .gbtn:hover{border-color:var(--accent2);color:var(--accent2)}
+    .gbtn.danger:hover{border-color:var(--error);color:var(--error)}
+    .lives{display:flex;gap:6px;align-items:center;font-size:.85rem;color:var(--muted)}
+    .heart{color:var(--error);font-size:1rem}
+    .heart.lost{opacity:.25}
+    .diff-row{display:flex;gap:8px;margin-bottom:16px}
+    .dbtn{flex:1;padding:8px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:600;transition:all .2s}
+    .dbtn.on{border-color:var(--accent);color:var(--accent);background:rgba(232,255,71,.06)}
+
+    /* OVERLAY */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+    .overlay.on{display:flex}
+    .ov-card{background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:40px 36px;text-align:center;max-width:320px;width:90%;animation:popIn .4s both}
+    .ov-icon{font-size:3.5rem;margin-bottom:16px}
+    .ov-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:8px}
+    .ov-sub{color:var(--muted);font-size:.9rem;margin-bottom:24px}
+    .ov-btns{display:flex;flex-direction:column;gap:10px}
   </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" id="mainWrap">
   <div class="brand">
     <div class="logo"><span class="dot"></span> MyApp</div>
     <p>Powered by Firebase</p>
@@ -97,97 +142,43 @@
       <button class="tab on" id="tabLogin" onclick="goTab('login')">Login</button>
       <button class="tab" id="tabReg" onclick="goTab('reg')">Register</button>
     </div>
-
-    <!-- LOGIN -->
     <form class="form on" id="fLogin" onsubmit="doLogin(event)">
       <div class="grp">
         <label>Email Address</label>
-        <div class="inp-w">
-          <span class="ico">✉</span>
-          <input type="text" id="lEml" placeholder="you@example.com" autocomplete="username"/>
-        </div>
+        <div class="inp-w"><span class="ico">✉</span><input type="text" id="lEml" placeholder="you@example.com" autocomplete="username"/></div>
         <div class="err" id="lEmlE">Please enter your email.</div>
       </div>
       <div class="grp">
         <label>Password</label>
-        <div class="inp-w">
-          <span class="ico">🔒</span>
-          <input type="password" id="lPw" placeholder="••••••••" autocomplete="current-password"/>
-          <button type="button" class="eye" onclick="toggleEye('lPw',this)">Show</button>
-        </div>
+        <div class="inp-w"><span class="ico">🔒</span><input type="password" id="lPw" placeholder="••••••••" autocomplete="current-password"/><button type="button" class="eye" onclick="toggleEye('lPw',this)">Show</button></div>
         <div class="err" id="lPwE">Please enter your password.</div>
       </div>
       <div class="between">
-        <label style="display:flex;gap:7px;align-items:center;cursor:pointer;font-size:.82rem;color:var(--muted)">
-          <input type="checkbox" style="accent-color:var(--accent)"/> Remember me
-        </label>
+        <label style="display:flex;gap:7px;align-items:center;cursor:pointer;font-size:.82rem;color:var(--muted)"><input type="checkbox" style="accent-color:var(--accent)"/> Remember me</label>
         <button type="button" class="lnk" onclick="doForgot()">Forgot password?</button>
       </div>
       <button type="submit" class="btn" id="lBtn">Sign In</button>
       <div class="div">or continue with</div>
       <div class="soc">
-        <button type="button" class="sbtn" onclick="doGoogle()">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Google
-        </button>
-        <button type="button" class="sbtn" onclick="doGithub()">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-          GitHub
-        </button>
+        <button type="button" class="sbtn" onclick="doGoogle()"><svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Google</button>
+        <button type="button" class="sbtn" onclick="doGithub()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>GitHub</button>
       </div>
     </form>
-
-    <!-- REGISTER -->
     <form class="form" id="fReg" onsubmit="doRegister(event)">
       <div class="row2">
-        <div class="grp">
-          <label>First Name</label>
-          <div class="inp-w">
-            <span class="ico">👤</span>
-            <input type="text" id="rFirst" placeholder="John" autocomplete="given-name"/>
-          </div>
-          <div class="err" id="rFirstE">Required.</div>
-        </div>
-        <div class="grp">
-          <label>Last Name</label>
-          <div class="inp-w">
-            <input type="text" id="rLast" placeholder="Doe" class="bare" autocomplete="family-name"/>
-          </div>
-          <div class="err" id="rLastE">Required.</div>
-        </div>
+        <div class="grp"><label>First Name</label><div class="inp-w"><span class="ico">👤</span><input type="text" id="rFirst" placeholder="John" autocomplete="given-name"/></div><div class="err" id="rFirstE">Required.</div></div>
+        <div class="grp"><label>Last Name</label><div class="inp-w"><input type="text" id="rLast" placeholder="Doe" class="bare" autocomplete="family-name"/></div><div class="err" id="rLastE">Required.</div></div>
       </div>
-      <div class="grp">
-        <label>Email Address</label>
-        <div class="inp-w">
-          <span class="ico">✉</span>
-          <input type="text" id="rEml" placeholder="you@example.com" autocomplete="off"/>
-        </div>
-        <div class="err" id="rEmlE">Enter a valid email.</div>
-      </div>
+      <div class="grp"><label>Email Address</label><div class="inp-w"><span class="ico">✉</span><input type="text" id="rEml" placeholder="you@example.com" autocomplete="off"/></div><div class="err" id="rEmlE">Enter a valid email.</div></div>
       <div class="grp">
         <label>Password</label>
-        <div class="inp-w">
-          <span class="ico">🔒</span>
-          <input type="password" id="rPw" placeholder="Min. 6 characters" oninput="checkStr(this.value)" autocomplete="new-password"/>
-          <button type="button" class="eye" onclick="toggleEye('rPw',this)">Show</button>
-        </div>
+        <div class="inp-w"><span class="ico">🔒</span><input type="password" id="rPw" placeholder="Min. 6 characters" oninput="checkStr(this.value)" autocomplete="new-password"/><button type="button" class="eye" onclick="toggleEye('rPw',this)">Show</button></div>
         <div class="sbar"><div class="seg" id="s1"></div><div class="seg" id="s2"></div><div class="seg" id="s3"></div><div class="seg" id="s4"></div></div>
         <div class="slbl" id="sLbl"></div>
         <div class="err" id="rPwE">At least 6 characters.</div>
       </div>
-      <div class="grp">
-        <label>Confirm Password</label>
-        <div class="inp-w">
-          <span class="ico">🔒</span>
-          <input type="password" id="rPwC" placeholder="••••••••" autocomplete="new-password"/>
-          <button type="button" class="eye" onclick="toggleEye('rPwC',this)">Show</button>
-        </div>
-        <div class="err" id="rPwCE">Passwords do not match.</div>
-      </div>
-      <div class="ckrow">
-        <input type="checkbox" id="ckTerms"/>
-        <label for="ckTerms">I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></label>
-      </div>
+      <div class="grp"><label>Confirm Password</label><div class="inp-w"><span class="ico">🔒</span><input type="password" id="rPwC" placeholder="••••••••" autocomplete="new-password"/><button type="button" class="eye" onclick="toggleEye('rPwC',this)">Show</button></div><div class="err" id="rPwCE">Passwords do not match.</div></div>
+      <div class="ckrow"><input type="checkbox" id="ckTerms"/><label for="ckTerms">I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></label></div>
       <div class="err" id="ckE">You must accept the terms.</div>
       <button type="submit" class="btn" id="rBtn">Create Account</button>
     </form>
@@ -199,17 +190,50 @@
       <div class="avatar" id="dAvatar">?</div>
       <div class="greet">Hello, <span id="dFirst">there</span>! 👋</div>
       <div class="demail" id="dEmail">—</div>
-      <div class="badges">
-        <span class="badge bg">✓ Verified</span>
-        <span class="badge by" id="dUid">uid:...</span>
-      </div>
     </div>
-    <div class="dinfo">
-      <div class="drow"><span class="dl">Full Name</span><span class="dv" id="dName">—</span></div>
-      <div class="drow"><span class="dl">Email</span><span class="dv" id="dEmail2">—</span></div>
-      <div class="drow"><span class="dl">Status</span><span class="dv" style="color:var(--success)">Active ●</span></div>
+    <div class="stats-row">
+      <div class="stat g"><div class="stat-n" id="sGames">0</div><div class="stat-l">Played</div></div>
+      <div class="stat w"><div class="stat-n" id="sWins">0</div><div class="stat-l">Wins 🏆</div></div>
+      <div class="stat l"><div class="stat-n" id="sLosses">0</div><div class="stat-l">Losses 💀</div></div>
     </div>
+    <button class="play-btn" onclick="startGame()">🎮 Play Sudoku</button>
     <button class="obtn" onclick="doLogout()">← Sign Out</button>
+  </div>
+
+  <!-- GAME -->
+  <div class="card" id="gameWrap">
+    <div class="game-header">
+      <div class="game-title">🧩 Sudoku</div>
+      <div class="timer" id="timerEl">00:00</div>
+    </div>
+    <div class="diff-row">
+      <button class="dbtn on" id="dEasy" onclick="setDiff('easy',this)">Easy</button>
+      <button class="dbtn" id="dMed" onclick="setDiff('medium',this)">Medium</button>
+      <button class="dbtn" id="dHard" onclick="setDiff('hard',this)">Hard</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="lives" id="livesEl"></div>
+      <div style="font-size:.78rem;color:var(--muted)" id="errCount">Errors: 0/3</div>
+    </div>
+    <div class="sudoku-grid" id="grid"></div>
+    <div class="numpad" id="numpad"></div>
+    <div class="game-actions">
+      <button class="gbt gbn" style="flex:1;padding:10px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;transition:all .2s" onclick="newGame()">New Game</button>
+      <button class="gbt" style="flex:1;padding:10px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;transition:all .2s" onclick="showDash()">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="ov-card">
+    <div class="ov-icon" id="ovIcon">🏆</div>
+    <div class="ov-title" id="ovTitle">You Won!</div>
+    <div class="ov-sub" id="ovSub">Amazing work!</div>
+    <div class="ov-btns">
+      <button class="btn" onclick="newGame();closeOverlay()">Play Again</button>
+      <button style="width:100%;padding:11px;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:600" onclick="showDash();closeOverlay()">Back to Dashboard</button>
+    </div>
   </div>
 </div>
 
@@ -218,152 +242,338 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Firebase config (base64 encoded to prevent proxy modification)
 const cfg = JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5RGduQzQ2T2V4cGFzUERxMFNXUjFHR0JDTm9DLUtEYjdzIiwgImF1dGhEb21haW4iOiAiaW5zaWdodGZvcmdlYWktZGY3OGIuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJpbnNpZ2h0Zm9yZ2VhaS1kZjc4YiIsICJzdG9yYWdlQnVja2V0IjogImluc2lnaHRmb3JnZWFpLWRmNzhiLmZpcmViYXNlc3RvcmFnZS5hcHAiLCAibWVzc2FnaW5nU2VuZGVySWQiOiAiNDQzMDIyNjEzNjA4IiwgImFwcElkIjogIjE6NDQzMDIyNjEzNjA4OndlYjo0YTg2MzFiZjdjYzdkNzA3OTdhZmRkIn0="));
-
 const app  = initializeApp(cfg);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-// Auth state
+let currentUser = null;
+
 onAuthStateChanged(auth, async user => {
   if (user) {
+    currentUser = user;
     let fn = '';
     try { const s = await getDoc(doc(db,'users',user.uid)); if(s.exists()) fn = s.data().firstName||''; } catch(e){}
     if (!fn) fn = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
-    showDash(user, fn);
+    showDashboard(user, fn);
   } else {
-    document.getElementById('authCard').style.display = 'block';
-    document.getElementById('dash').classList.remove('on');
-    document.getElementById('dash').style.display = 'none';
+    currentUser = null;
+    g('authCard').style.display = 'block';
+    g('dash').classList.remove('on'); g('dash').style.display = 'none';
+    g('gameWrap').classList.remove('on'); g('gameWrap').style.display = 'none';
   }
 });
 
-// REGISTER
 window.doRegister = async e => {
-  e.preventDefault();
-  clearE();
-  const fn  = g('rFirst').value.trim();
-  const ln  = g('rLast').value.trim();
-  const em  = g('rEml').value.trim();
-  const pw  = g('rPw').value;
-  const pwc = g('rPwC').value;
-  const ok2 = g('ckTerms').checked;
-  let ok = true;
-  if (!fn)  { se('rFirstE'); ok=false; }
-  if (!ln)  { se('rLastE'); ok=false; }
-  if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { se('rEmlE'); ok=false; }
-  if (!pw || pw.length<6) { se('rPwE'); ok=false; }
-  if (pw !== pwc) { se('rPwCE'); ok=false; }
-  if (!ok2) { se('ckE'); ok=false; }
-  if (!ok) return;
-  const btn = g('rBtn'); btn.classList.add('spin');
+  e.preventDefault(); clearE();
+  const fn=g('rFirst').value.trim(), ln=g('rLast').value.trim(), em=g('rEml').value.trim(), pw=g('rPw').value, pwc=g('rPwC').value, ok2=g('ckTerms').checked;
+  let ok=true;
+  if(!fn){se('rFirstE');ok=false;} if(!ln){se('rLastE');ok=false;}
+  if(!em||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){se('rEmlE');ok=false;}
+  if(!pw||pw.length<6){se('rPwE');ok=false;} if(pw!==pwc){se('rPwCE');ok=false;}
+  if(!ok2){se('ckE');ok=false;} if(!ok)return;
+  const btn=g('rBtn'); btn.classList.add('spin');
   try {
-    const cr = await createUserWithEmailAndPassword(auth, em, pw);
-    await updateProfile(cr.user, { displayName: fn+' '+ln });
-    try { await setDoc(doc(db,'users',cr.user.uid),{firstName:fn,lastName:ln,email:em,uid:cr.user.uid,createdAt:serverTimestamp()}); } catch(fe){console.warn('fs:',fe.message);}
-    toast('Welcome, '+fn+'! Account created 🎉','🎉');
-  } catch(err) {
-    console.error(err.code, err.message);
-    toast(friendly(err.code),'✗');
-    se('rEmlE', friendly(err.code));
-  }
+    const cr=await createUserWithEmailAndPassword(auth,em,pw);
+    await updateProfile(cr.user,{displayName:fn+' '+ln});
+    try { await setDoc(doc(db,'users',cr.user.uid),{firstName:fn,lastName:ln,email:em,uid:cr.user.uid,games:0,wins:0,losses:0,createdAt:serverTimestamp()}); } catch(fe){console.warn('fs:',fe.message);}
+    toast('Welcome, '+fn+'! 🎉','🎉');
+  } catch(err){console.error(err.code);toast(friendly(err.code),'✗');se('rEmlE',friendly(err.code));}
   btn.classList.remove('spin');
 };
 
-// LOGIN
 window.doLogin = async e => {
-  e.preventDefault();
-  clearE();
-  const em = g('lEml').value.trim();
-  const pw = g('lPw').value;
-  if (!em) { se('lEmlE'); return; }
-  if (!pw) { se('lPwE'); return; }
-  const btn = g('lBtn'); btn.classList.add('spin');
-  try { await signInWithEmailAndPassword(auth, em, pw); }
-  catch(err) { console.error(err.code); toast(friendly(err.code),'✗'); se('lEmlE',friendly(err.code)); btn.classList.remove('spin'); }
+  e.preventDefault(); clearE();
+  const em=g('lEml').value.trim(), pw=g('lPw').value;
+  if(!em){se('lEmlE');return;} if(!pw){se('lPwE');return;}
+  const btn=g('lBtn'); btn.classList.add('spin');
+  try{await signInWithEmailAndPassword(auth,em,pw);}
+  catch(err){console.error(err.code);toast(friendly(err.code),'✗');se('lEmlE',friendly(err.code));btn.classList.remove('spin');}
 };
 
-// GOOGLE
 window.doGoogle = async () => {
   try {
-    const cr = await signInWithPopup(auth, new GoogleAuthProvider());
-    const rf = doc(db,'users',cr.user.uid);
+    const cr=await signInWithPopup(auth,new GoogleAuthProvider());
+    const rf=doc(db,'users',cr.user.uid);
     if(!(await getDoc(rf)).exists()){
       const [f,...r]=(cr.user.displayName||'').split(' ');
-      await setDoc(rf,{firstName:f||'',lastName:r.join(' ')||'',email:cr.user.email,uid:cr.user.uid,createdAt:serverTimestamp()});
+      await setDoc(rf,{firstName:f||'',lastName:r.join(' ')||'',email:cr.user.email,uid:cr.user.uid,games:0,wins:0,losses:0,createdAt:serverTimestamp()});
     }
-  } catch(e){ toast(friendly(e.code),'✗'); }
+  } catch(e){toast(friendly(e.code),'✗');}
 };
 
-// GITHUB
 window.doGithub = async () => {
   try {
-    const cr = await signInWithPopup(auth, new GithubAuthProvider());
-    const rf = doc(db,'users',cr.user.uid);
-    if(!(await getDoc(rf)).exists()) await setDoc(rf,{email:cr.user.email,uid:cr.user.uid,createdAt:serverTimestamp()});
-  } catch(e){ toast(friendly(e.code),'✗'); }
+    const cr=await signInWithPopup(auth,new GithubAuthProvider());
+    const rf=doc(db,'users',cr.user.uid);
+    if(!(await getDoc(rf)).exists()) await setDoc(rf,{email:cr.user.email,uid:cr.user.uid,games:0,wins:0,losses:0,createdAt:serverTimestamp()});
+  } catch(e){toast(friendly(e.code),'✗');}
 };
 
-// FORGOT
 window.doForgot = async () => {
-  const em = g('lEml').value.trim();
-  if (!em) { se('lEmlE','Enter your email first.'); return; }
-  try { await sendPasswordResetEmail(auth,em); toast('Reset email sent! Check inbox 📧','📧'); }
-  catch(e){ toast(friendly(e.code),'✗'); }
+  const em=g('lEml').value.trim();
+  if(!em){se('lEmlE','Enter your email first.');return;}
+  try{await sendPasswordResetEmail(auth,em);toast('Reset email sent! 📧','📧');}
+  catch(e){toast(friendly(e.code),'✗');}
 };
 
-// LOGOUT
 window.doLogout = async () => { await signOut(auth); toast('Signed out 👋','👋'); };
 
-function showDash(user, fn) {
-  g('authCard').style.display = 'none';
-  const d = g('dash'); d.style.display='block'; d.classList.add('on');
-  const full = user.displayName || fn || user.email;
-  g('dAvatar').textContent  = fn.charAt(0).toUpperCase();
-  g('dFirst').textContent   = fn;
-  g('dEmail').textContent   = user.email;
-  g('dName').textContent    = full;
-  g('dEmail2').textContent  = user.email;
-  g('dUid').textContent     = 'uid:'+user.uid.slice(0,10)+'…';
-  toast('Welcome back, '+fn+'! 👋','👋');
+async function showDashboard(user, fn) {
+  g('authCard').style.display='none';
+  g('gameWrap').classList.remove('on'); g('gameWrap').style.display='none';
+  const d=g('dash'); d.style.display='block'; d.classList.add('on');
+  g('dAvatar').textContent=fn.charAt(0).toUpperCase();
+  g('dFirst').textContent=fn;
+  g('dEmail').textContent=user.email;
+  // Load stats
+  try {
+    const s=await getDoc(doc(db,'users',user.uid));
+    if(s.exists()){
+      const data=s.data();
+      g('sGames').textContent=data.games||0;
+      g('sWins').textContent=data.wins||0;
+      g('sLosses').textContent=data.losses||0;
+    }
+  } catch(e){}
 }
 
+window.showDash = () => {
+  stopTimer();
+  g('gameWrap').classList.remove('on'); g('gameWrap').style.display='none';
+  if(currentUser){
+    const fn=currentUser.displayName?currentUser.displayName.split(' ')[0]:currentUser.email.split('@')[0];
+    showDashboard(currentUser,fn);
+  }
+};
+
+// ─── SUDOKU ENGINE ─────────────────────────────────────────────
+let puzzle=[], solution=[], selected=null, errors=0, maxErrors=3, lives=3;
+let timerInterval=null, seconds=0, difficulty='easy', gameActive=false;
+
+const REMOVE_COUNTS = {easy:35, medium:45, hard:52};
+
+function generateSudoku() {
+  const board = Array.from({length:9},()=>Array(9).fill(0));
+  fillBoard(board);
+  return board;
+}
+
+function fillBoard(b) {
+  const nums=[1,2,3,4,5,6,7,8,9];
+  for(let r=0;r<9;r++) for(let c=0;c<9;c++) {
+    if(b[r][c]===0){
+      shuffle(nums);
+      for(let n of nums){
+        if(isValid(b,r,c,n)){b[r][c]=n;if(fillBoard(b))return true;b[r][c]=0;}
+      }
+      return false;
+    }
+  }
+  return true;
+}
+
+function isValid(b,r,c,n){
+  for(let i=0;i<9;i++){if(b[r][i]===n||b[i][c]===n)return false;}
+  const br=Math.floor(r/3)*3, bc=Math.floor(c/3)*3;
+  for(let i=0;i<3;i++)for(let j=0;j<3;j++){if(b[br+i][bc+j]===n)return false;}
+  return true;
+}
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
+
+function makePuzzle(sol, remove) {
+  const p=sol.map(r=>[...r]);
+  let removed=0, attempts=0;
+  while(removed<remove && attempts<1000){
+    const r=Math.floor(Math.random()*9), c=Math.floor(Math.random()*9);
+    if(p[r][c]!==0){p[r][c]=0;removed++;}
+    attempts++;
+  }
+  return p;
+}
+
+window.startGame = () => {
+  g('dash').classList.remove('on'); g('dash').style.display='none';
+  const gw=g('gameWrap'); gw.style.display='block'; gw.classList.add('on');
+  newGame();
+};
+
+window.newGame = () => {
+  stopTimer();
+  errors=0; lives=3; selected=null; gameActive=true;
+  g('errCount').textContent='Errors: 0/3';
+  solution=generateSudoku();
+  puzzle=makePuzzle(solution, REMOVE_COUNTS[difficulty]);
+  renderGrid();
+  renderNumpad();
+  renderLives();
+  startTimer();
+};
+
+window.setDiff = (d,btn) => {
+  difficulty=d;
+  document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  newGame();
+};
+
+function renderGrid() {
+  const grid=g('grid'); grid.innerHTML='';
+  for(let r=0;r<9;r++) for(let c=0;c<9;c++){
+    const cell=document.createElement('button');
+    cell.className='cell';
+    cell.dataset.r=r; cell.dataset.c=c;
+    const v=puzzle[r][c];
+    if(v!==0){cell.textContent=v;cell.classList.add('given');}
+    else{cell.classList.add('editable');}
+    cell.onclick=()=>selectCell(r,c);
+    // Box borders
+    if(c===2||c===5) cell.style.borderRight='2px solid #555';
+    if(r===2||r===5) cell.style.borderBottom='2px solid #555';
+    grid.appendChild(cell);
+  }
+}
+
+function renderNumpad() {
+  const np=g('numpad'); np.innerHTML='';
+  for(let i=1;i<=9;i++){
+    const b=document.createElement('button');
+    b.className='nk'; b.textContent=i;
+    b.onclick=()=>inputNum(i);
+    np.appendChild(b);
+  }
+  const del=document.createElement('button');
+  del.className='nk erase'; del.textContent='⌫';
+  del.onclick=()=>inputNum(0);
+  // Replace last with erase — add as 10th but use CSS grid
+  np.style.gridTemplateColumns='repeat(5,1fr)';
+  np.appendChild(del);
+}
+
+function renderLives() {
+  const el=g('livesEl'); el.innerHTML='';
+  for(let i=0;i<maxErrors;i++){
+    const h=document.createElement('span');
+    h.className='heart'+(i>=lives?' lost':'');
+    h.textContent='❤️';
+    el.appendChild(h);
+  }
+}
+
+function selectCell(r,c) {
+  if(!gameActive) return;
+  selected={r,c};
+  // Highlight
+  document.querySelectorAll('.cell').forEach(cell=>{
+    const cr=+cell.dataset.r, cc=+cell.dataset.c;
+    cell.classList.remove('selected','highlight');
+    if(cr===r&&cc===c) cell.classList.add('selected');
+    else if(cr===r||cc===c||
+      (Math.floor(cr/3)===Math.floor(r/3)&&Math.floor(cc/3)===Math.floor(c/3)))
+      cell.classList.add('highlight');
+  });
+}
+
+function inputNum(n) {
+  if(!selected||!gameActive) return;
+  const {r,c}=selected;
+  if(puzzle[r][c]!==0) return; // given cell
+  const cell=document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+  if(n===0){cell.textContent='';cell.classList.remove('error','correct');puzzle[r][c]=0;return;}
+  cell.textContent=n;
+  puzzle[r][c]=n;
+  if(n===solution[r][c]){
+    cell.classList.remove('error'); cell.classList.add('correct');
+    if(checkWin()) endGame(true);
+  } else {
+    cell.classList.add('error'); cell.classList.remove('correct');
+    errors++; lives=Math.max(0,3-errors);
+    g('errCount').textContent=`Errors: ${errors}/3`;
+    renderLives();
+    if(errors>=maxErrors) endGame(false);
+  }
+}
+
+function checkWin(){
+  for(let r=0;r<9;r++) for(let c=0;c<9;c++){
+    if(puzzle[r][c]!==solution[r][c]) return false;
+  }
+  return true;
+}
+
+async function endGame(won) {
+  gameActive=false; stopTimer();
+  const mins=Math.floor(seconds/60), secs=seconds%60;
+  const timeStr=`${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+  // Save to Firebase
+  if(currentUser){
+    try {
+      await updateDoc(doc(db,'users',currentUser.uid),{
+        games: increment(1),
+        wins: increment(won?1:0),
+        losses: increment(won?0:1)
+      });
+    } catch(e){console.warn('stats save failed',e);}
+  }
+  // Show overlay
+  const ov=g('overlay');
+  g('ovIcon').textContent=won?'🏆':'💀';
+  g('ovTitle').textContent=won?'You Won!':'Game Over';
+  g('ovSub').textContent=won?`Solved in ${timeStr} with ${errors} error${errors!==1?'s':''}!`:`Better luck next time! You made ${errors} mistakes.`;
+  ov.classList.add('on');
+}
+
+window.closeOverlay=()=>g('overlay').classList.remove('on');
+
+// Timer
+function startTimer(){
+  seconds=0; g('timerEl').textContent='00:00'; g('timerEl').classList.remove('danger');
+  timerInterval=setInterval(()=>{
+    seconds++;
+    const m=Math.floor(seconds/60),s=seconds%60;
+    g('timerEl').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if(seconds>300) g('timerEl').classList.add('danger');
+  },1000);
+}
+function stopTimer(){clearInterval(timerInterval);}
+
+// Helpers
 function friendly(c){
-  return({'auth/email-already-in-use':'Email already registered.','auth/invalid-email':'Invalid email.','auth/wrong-password':'Wrong password.','auth/user-not-found':'No account with this email.','auth/invalid-credential':'Wrong email or password.','auth/weak-password':'Password too short (min 6).','auth/too-many-requests':'Too many attempts. Try later.','auth/popup-closed-by-user':'Popup closed.','auth/network-request-failed':'Network error. Check connection.'})[c]||'Error: '+c;
+  return({'auth/email-already-in-use':'Email already registered.','auth/invalid-email':'Invalid email.','auth/wrong-password':'Wrong password.','auth/user-not-found':'No account with this email.','auth/invalid-credential':'Wrong email or password.','auth/weak-password':'Password too short (min 6).','auth/too-many-requests':'Too many attempts. Try later.','auth/popup-closed-by-user':'Popup closed.','auth/network-request-failed':'Network error.'})[c]||'Error: '+c;
 }
-
 function g(id){return document.getElementById(id);}
 function se(id,msg){const el=g(id);if(msg)el.textContent=msg;el.classList.add('on');}
 function clearE(){document.querySelectorAll('.err').forEach(e=>e.classList.remove('on'));}
+function toast(msg,icon='✓',ms=3500){const t=g('toast');g('tMsg').textContent=msg;g('tIcon').textContent=icon;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),ms);}
 
-// UI helpers
-window.goTab = t => {
-  g('tabLogin').classList.toggle('on', t==='login');
-  g('tabReg').classList.toggle('on', t==='reg');
-  g('fLogin').classList.toggle('on', t==='login');
-  g('fReg').classList.toggle('on', t==='reg');
+window.goTab=t=>{
+  g('tabLogin').classList.toggle('on',t==='login'); g('tabReg').classList.toggle('on',t==='reg');
+  g('fLogin').classList.toggle('on',t==='login'); g('fReg').classList.toggle('on',t==='reg');
   clearE();
 };
-window.toggleEye = (id,btn) => {
-  const f=g(id); f.type=f.type==='password'?'text':'password';
-  btn.textContent=f.type==='password'?'Show':'Hide';
-};
-window.checkStr = v => {
-  let s=0;
-  if(v.length>=6)s++;if(v.length>=10)s++;
-  if(/[A-Z]/.test(v)&&/[0-9]/.test(v))s++;
-  if(/[^A-Za-z0-9]/.test(v))s++;
+window.toggleEye=(id,btn)=>{const f=g(id);f.type=f.type==='password'?'text':'password';btn.textContent=f.type==='password'?'Show':'Hide';};
+window.checkStr=v=>{
+  let s=0;if(v.length>=6)s++;if(v.length>=10)s++;
+  if(/[A-Z]/.test(v)&&/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;
   const c=['#ff5c5c','#ffaa47','#e8ff47','#47ffb2'],l=['','Weak','Fair','Good','Strong'];
   ['s1','s2','s3','s4'].forEach((id,i)=>g(id).style.background=i<s?c[s-1]:'var(--border)');
-  const lb=g('sLbl'); lb.textContent=v.length?l[s]:''; lb.style.color=s>0?c[s-1]:'var(--muted)';
+  const lb=g('sLbl');lb.textContent=v.length?l[s]:'';lb.style.color=s>0?c[s-1]:'var(--muted)';
 };
-function toast(msg,icon='✓',ms=3500){
-  const t=g('toast');g('tMsg').textContent=msg;g('tIcon').textContent=icon;
-  t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),ms);
-}
+
+// Keyboard support
+document.addEventListener('keydown', e=>{
+  if(!gameActive||!selected) return;
+  if(e.key>='1'&&e.key<='9') inputNum(+e.key);
+  if(e.key==='Backspace'||e.key==='Delete') inputNum(0);
+  const {r,c}=selected;
+  if(e.key==='ArrowUp'&&r>0) selectCell(r-1,c);
+  if(e.key==='ArrowDown'&&r<8) selectCell(r+1,c);
+  if(e.key==='ArrowLeft'&&c>0) selectCell(r,c-1);
+  if(e.key==='ArrowRight'&&c<8) selectCell(r,c+1);
+});
 </script>
 </body>
 </html>
