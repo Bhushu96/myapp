@@ -30,210 +30,69 @@ body{font-family:"Source Sans 3",sans-serif;background:var(--white);color:var(--
 
 /* NAV */
 nav{position:fixed;top:0;inset-x:0;z-index:100;transition:all .35s}
-nav.top{background:transparent;padding:22px 0}
+nav.top{background:rgba(255,255,255,0.12);backdrop-filter:blur(12px);padding:18px 0;border-bottom:1px solid rgba(255,255,255,.15)}
 nav.solid{background:var(--white);padding:14px 0;box-shadow:var(--shadow)}
-.nav-in{max-width:1120px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
-.nlogo{font-family:"Libre Baskerville",serif;font-size:1.05rem;font-weight:700;text-decoration:none;transition:color .3s}
+.nav-in{max-width:1200px;margin:0 auto;padding:0 48px;display:flex;align-items:center;gap:0}
+.nlogo{font-family:"Libre Baskerville",serif;font-size:1.15rem;font-weight:700;text-decoration:none;transition:color .3s;margin-right:48px;white-space:nowrap;flex-shrink:0}
 nav.top .nlogo{color:#fff}
 nav.solid .nlogo{color:var(--ink)}
 .nlogo span{color:var(--blue)}
 nav.top .nlogo span{color:#93c5f5}
-.nlinks{display:flex;align-items:center;gap:4px;list-style:none}
-.nlinks a{font-size:.86rem;font-weight:500;padding:7px 14px;border-radius:3px;transition:all .2s;text-decoration:none}
-nav.top .nlinks a{color:rgba(255,255,255,.85)}
-nav.top .nlinks a:hover{color:#fff;background:rgba(255,255,255,.1)}
-nav.solid .nlinks a{color:var(--muted)}
-nav.solid .nlinks a:hover{color:var(--ink);background:var(--off)}
-.ncta{font-weight:600 !important}
-nav.top .ncta{background:rgba(255,255,255,.15) !important;border:1.5px solid rgba(255,255,255,.35) !important;border-radius:4px !important;color:#fff !important}
-nav.solid .ncta{background:var(--blue) !important;color:#fff !important;border-radius:4px !important}
+/* Links LEFT aligned, bigger */
+.nlinks{display:flex;align-items:center;gap:4px;list-style:none;flex:1;justify-content:flex-start}
+.nlinks a{font-size:1rem;font-weight:500;padding:9px 18px;border-radius:4px;transition:all .2s;text-decoration:none;letter-spacing:.2px}
+nav.top .nlinks a{color:rgba(255,255,255,.9)}
+nav.top .nlinks a:hover{color:#fff;background:rgba(255,255,255,.12)}
+nav.solid .nlinks a{color:var(--body)}
+nav.solid .nlinks a:hover{color:var(--blue);background:var(--blue-light)}
+/* CTA at far right */
+.nlinks .ncta{margin-left:auto;font-weight:600;font-size:.95rem}
+nav.top .ncta{background:rgba(255,255,255,.18) !important;border:1.5px solid rgba(255,255,255,.45) !important;border-radius:6px !important;color:#fff !important;padding:10px 22px !important}
+nav.top .ncta:hover{background:rgba(255,255,255,.28) !important}
+nav.solid .ncta{background:var(--blue) !important;color:#fff !important;border-radius:6px !important;padding:10px 22px !important}
 nav.solid .ncta:hover{background:var(--blue2) !important}
 
-/* HERO */
+/* HERO — clean photo slideshow, light overlay */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:130px 0 100px;overflow:hidden;background:#d4dde8}
 
-/* ══ HERO — PHOTO SLIDESHOW ══
-   Uses CSS background-image — photos display on any hosted site (GitHub Pages etc).
-   Falls back to a beautiful gradient scene locally.
-   IMPORTANT: To see real photos, upload to GitHub Pages — photos load automatically.
-*/
-.hero{
-  position:relative;min-height:100vh;display:flex;align-items:center;
-  padding:130px 0 90px;overflow:hidden;
-}
-
-/* Each slide is a full-bleed background panel */
-.slide{
-  position:absolute;inset:0;
-  background-size:cover;background-position:center;background-repeat:no-repeat;
-  opacity:0;transition:opacity 2s ease-in-out;
-  z-index:0;
-}
+/* Fullscreen slides */
+.slide{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity 2.2s ease-in-out;z-index:0}
 .slide.active{opacity:1}
+/* Ken Burns slow zoom on active slide */
+.slide.active{animation:kbzoom 8s ease-in-out forwards}
+@keyframes kbzoom{from{transform:scale(1)}to{transform:scale(1.06)}}
 
-/* Photo slides — using local photos uploaded to the repo */
-.slide-1{background-image:linear-gradient(rgba(8,18,38,.52),rgba(8,18,38,.52)),url("photo1.jpg");}
-.slide-2{background-image:linear-gradient(rgba(8,18,38,.48),rgba(8,18,38,.48)),url("photo2.jpg");}
-.slide-3{background-image:linear-gradient(rgba(8,18,38,.48),rgba(8,18,38,.48)),url("photo3.jpg");}
-.slide-4{background-image:linear-gradient(rgba(8,18,38,.48),rgba(8,18,38,.48)),url("photo3.jpg");}
+/* Photos */
+.slide-1{background-image:url("photo1.jpg")}
+.slide-2{background-image:url("photo2.jpg")}
+.slide-3{background-image:url("photo3.jpg")}
+.slide-4{background-image:url("photo3.jpg")}
 
-/* CSS fallback — beautiful gradient scene when photos can't load (local) */
-.hero-fallback{
-  position:absolute;inset:0;z-index:0;overflow:hidden;
-  background:linear-gradient(160deg,#0a1628 0%,#12284a 40%,#0f2040 70%,#080f1e 100%);
-}
-/* Sky stars */
-.hero-fallback::before{
-  content:"";position:absolute;inset:0;
-  background-image:
-    radial-gradient(1px 1px at 10% 8%,rgba(255,255,255,.7) 0%,transparent 100%),
-    radial-gradient(1px 1px at 22% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1px 1px at 35% 5%,rgba(255,255,255,.8) 0%,transparent 100%),
-    radial-gradient(1.5px 1.5px at 50% 10%,rgba(255,255,255,.6) 0%,transparent 100%),
-    radial-gradient(1px 1px at 65% 7%,rgba(255,255,255,.7) 0%,transparent 100%),
-    radial-gradient(1px 1px at 78% 12%,rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1.2px 1.2px at 88% 6%,rgba(255,255,255,.9) 0%,transparent 100%),
-    radial-gradient(1px 1px at 95% 18%,rgba(255,255,255,.6) 0%,transparent 100%),
-    radial-gradient(1px 1px at 15% 22%,rgba(255,255,255,.4) 0%,transparent 100%),
-    radial-gradient(1px 1px at 42% 20%,rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1px 1px at 70% 25%,rgba(255,255,255,.4) 0%,transparent 100%);
-}
-/* Warehouse glow on right side */
-.hero-fallback::after{
-  content:"";position:absolute;right:-5%;top:10%;width:70%;height:80%;
-  background:
-    radial-gradient(ellipse 60% 40% at 80% 45%,rgba(29,78,137,.18) 0%,transparent 70%),
-    radial-gradient(ellipse 40% 30% at 90% 70%,rgba(249,115,22,.08) 0%,transparent 60%);
-}
-/* Warehouse building — CSS only */
-.wh-building{
-  position:absolute;right:0;top:0;bottom:0;width:55%;
-  background:linear-gradient(180deg,transparent 8%,rgba(14,30,58,.0) 8%);
-  overflow:hidden;
-}
-.wh-building::before{
-  content:"";position:absolute;
-  left:10%;right:0;top:18%;bottom:25%;
-  background:linear-gradient(180deg,#162d55 0%,#0f2040 100%);
-  clip-path:polygon(0 8%,48% 0%,100% 8%,100% 100%,0 100%);
-}
-.wh-building::after{
-  content:"";position:absolute;
-  left:10%;right:0;bottom:25%;height:30%;
-  background:rgba(11,20,38,.9);
-}
-
-/* Ground & road */
-.hero-ground{
-  position:absolute;bottom:0;left:0;right:0;height:28%;
-  background:linear-gradient(180deg,#0c1a2e 0%,#080e1a 100%);
-}
-.hero-road{
-  position:absolute;bottom:9%;left:0;right:0;height:11%;
-  background:#0e1a28;
-  border-top:2px solid rgba(255,255,255,.06);
-  border-bottom:2px solid rgba(255,255,255,.06);
-}
-.hero-road::after{
-  content:"";position:absolute;top:50%;left:0;right:0;height:2px;margin-top:-1px;
-  background:repeating-linear-gradient(90deg,rgba(255,255,255,.25) 0px,rgba(255,255,255,.25) 36px,transparent 36px,transparent 60px);
-}
-
-/* Animated truck */
-.hero-truck{
-  position:absolute;bottom:calc(9% + 11%/2 - 28px);
-  width:260px;height:56px;
-  animation:truckRide 11s linear infinite;
-  z-index:1;
-}
-@keyframes truckRide{
-  0%{left:-280px;opacity:0}
-  5%{opacity:1}
-  92%{opacity:1}
-  100%{left:calc(100% + 20px);opacity:0}
-}
-.truck-trailer{
-  position:absolute;left:0;top:0;
-  width:180px;height:46px;
-  background:linear-gradient(180deg,#e8f0f8 0%,#c8d8e8 100%);
-  border-radius:3px 3px 2px 2px;
-}
-.truck-trailer-roof{
-  position:absolute;left:0;top:0;width:180px;height:8px;
-  background:#1d4e89;border-radius:3px 3px 0 0;
-}
-.truck-trailer-text{
-  position:absolute;left:0;top:12px;width:180px;
-  font-size:7px;font-weight:bold;color:#1d4e89;
-  text-align:center;letter-spacing:2px;font-family:Arial,sans-serif;
-}
-.truck-trailer-ribs{
-  position:absolute;left:0;top:8px;width:180px;height:38px;
-  background:repeating-linear-gradient(90deg,transparent 0px,transparent 35px,rgba(29,78,137,.15) 35px,rgba(29,78,137,.15) 36px);
-}
-.truck-cab{
-  position:absolute;left:180px;top:4px;
-  width:80px;height:42px;
-  background:linear-gradient(135deg,#1d4e89,#2563aa);
-  border-radius:3px 8px 3px 3px;
-}
-.truck-windshield{
-  position:absolute;left:10px;top:6px;width:46px;height:22px;
-  background:rgba(147,197,245,.5);border-radius:2px;
-}
-.truck-grill{
-  position:absolute;left:68px;top:16px;width:12px;height:20px;
-  background:#0a1628;border-radius:0 4px 4px 0;
-}
-.truck-headlight{
-  position:absolute;left:69px;top:18px;width:9px;height:7px;
-  background:#fef9c3;border-radius:0 2px 2px 0;
-  box-shadow:0 0 12px 4px rgba(254,249,195,.5);
-}
-.truck-wheel{border-radius:50%;background:#0e1a28;border:3px solid #3a4a5a;position:absolute;bottom:-10px}
-.tw1{width:24px;height:24px;left:20px}
-.tw2{width:24px;height:24px;left:60px}
-.tw3{width:24px;height:24px;left:140px}
-.tw4{width:22px;height:22px;left:185px}
-.tw5{width:22px;height:22px;left:216px}
-.truck-exhaust{
-  position:absolute;left:238px;top:-18px;width:6px;height:20px;
-  background:#2a3a4a;border-radius:2px;
-}
-.exhaust-puff{
-  position:absolute;left:234px;top:-30px;
-  width:18px;height:18px;border-radius:50%;
-  background:rgba(180,190,200,.25);
-  animation:puff 1.5s ease-out infinite;
-}
-@keyframes puff{0%{transform:scale(0.3);opacity:.4}100%{transform:scale(2.5);opacity:0}}
+/* Light overlay — not too dark, lets photo breathe */
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(105deg,rgba(255,255,255,.72) 0%,rgba(255,255,255,.45) 40%,rgba(255,255,255,.15) 75%,rgba(255,255,255,0) 100%)}
+/* Bottom fade into white */
+.hero-fade{position:absolute;bottom:0;left:0;right:0;height:110px;z-index:2;background:linear-gradient(to top,#fff,transparent)}
 
 /* Content */
 .hero-c{position:relative;z-index:3;max-width:640px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(29,78,137,.08);border:1px solid rgba(29,78,137,.18);border-radius:20px;padding:7px 18px;margin-bottom:28px}
+.bdot{width:8px;height:8px;background:#16a34a;border-radius:50%;animation:blink 2.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(22,163,74,.4)}50%{opacity:.8;box-shadow:0 0 0 7px rgba(22,163,74,0)}}
+.btxt{font-size:.75rem;font-weight:700;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase}
+.hero h1{font-family:"Libre Baskerville",serif;font-size:clamp(2rem,4.5vw,3.8rem);color:var(--ink);line-height:1.1;letter-spacing:-.5px;margin-bottom:18px}
+.hero h1 em{font-style:italic;color:var(--blue)}
+.hero-sub{font-size:1.05rem;color:var(--body);line-height:1.8;margin-bottom:40px;font-weight:400;max-width:520px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-o{background:transparent;color:var(--blue);border:2px solid var(--blue)}
+.btn-o:hover{background:var(--blue);color:#fff}
 
-/* Text for dark background */
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:7px 18px;margin-bottom:28px;backdrop-filter:blur(8px)}
-.bdot{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:blink 2.5s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{opacity:.8;box-shadow:0 0 0 7px rgba(74,222,128,0)}}
-.btxt{font-size:.75rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:1.5px;text-transform:uppercase}
-.hero h1{font-family:"Libre Baskerville",serif;font-size:clamp(2rem,4.5vw,3.6rem);color:#fff;line-height:1.1;letter-spacing:-.5px;margin-bottom:18px}
-.hero h1 em{font-style:italic;color:#93c5f5}
-.hero-sub{font-size:1.02rem;color:rgba(255,255,255,.72);line-height:1.8;margin-bottom:36px;font-weight:300;max-width:520px}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:52px}
-.btn-o{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)}
-.btn-o:hover{background:rgba(255,255,255,.12);border-color:#fff}
-.hero-stats{display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;overflow:hidden;max-width:480px;backdrop-filter:blur(12px)}
-.hst{flex:1;padding:18px 20px;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
-.hst:last-child{border-right:none}
-.hst-n{font-family:"Libre Baskerville",serif;font-size:1.9rem;color:#fff;font-weight:700;line-height:1;margin-bottom:4px}
-.hst-l{font-size:.68rem;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase}
-/* Bottom fade */
-.hero-fade{position:absolute;bottom:0;left:0;right:0;height:120px;z-index:2;background:linear-gradient(to top,#fff,transparent)}
-/* Slide dots */
-.slide-dots{position:absolute;bottom:136px;right:40px;z-index:4;display:flex;gap:8px}
-.sdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
-.sdot.on{background:#fff;width:22px;border-radius:4px}
-/* Scene name */
-.scene-label{position:absolute;bottom:136px;left:50%;transform:translateX(-50%);z-index:4;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(10px);border-radius:20px;padding:5px 18px;font-size:.7rem;font-weight:600;color:rgba(255,255,255,.75);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap}
+/* Slide dots bottom right */
+.slide-dots{position:absolute;bottom:130px;right:44px;z-index:4;display:flex;gap:9px;align-items:center}
+.sdot{width:9px;height:9px;border-radius:50%;background:rgba(29,78,137,.25);border:1.5px solid rgba(29,78,137,.4);cursor:pointer;transition:all .3s}
+.sdot.on{background:var(--blue);width:24px;border-radius:5px;border-color:var(--blue)}
+
+/* Current photo label */
+.scene-label{position:absolute;bottom:132px;left:50%;transform:translateX(-50%);z-index:4;background:rgba(255,255,255,.85);border:1px solid rgba(29,78,137,.15);backdrop-filter:blur(10px);border-radius:20px;padding:5px 18px;font-size:.7rem;font-weight:600;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;box-shadow:var(--shadow)}
 /* ABOUT */
 .about{padding:108px 0;background:var(--white)}
 .about-g{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center}
@@ -397,7 +256,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.42);padding:60px 0 30px}
 @media(max-width:600px){
   .container{padding:0 20px}
   .svc-g,.tcard-g,.ind-g{grid-template-columns:1fr}
-  .hero-stats{flex-direction:column}
+  .hero-btns{flex-direction:column;gap:10px}
   .hst{border-right:none;border-bottom:1px solid rgba(255,255,255,.1)}
   .hst:last-child{border-bottom:none}
   section,.hero,.about,.services,.process,.testi,.faq,.contact,.cta{padding:72px 0}
@@ -424,55 +283,15 @@ footer{background:var(--ink);color:rgba(255,255,255,.42);padding:60px 0 30px}
 <!-- HERO -->
 <section class="hero" id="home">
 
-  <!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  HOW TO ADD YOUR OWN WAREHOUSE PHOTOS                       ║
-  ║  ─────────────────────────────────────────────────────────  ║
-  ║  1. Download free photos from: pexels.com (search:          ║
-  ║     "warehouse interior" or "logistics truck")              ║
-  ║  2. Save them as: photo1.jpg, photo2.jpg, photo3.jpg,       ║
-  ║     photo4.jpg  in the SAME folder as this HTML file        ║
-  ║  3. Uncomment the .slide-1 through .slide-4 CSS lines       ║
-  ║     and update the filenames                                ║
-  ║  4. On GitHub Pages: use full Pexels URLs directly —        ║
-  ║     they load automatically on any hosted website           ║
-  ╚══════════════════════════════════════════════════════════════╝
-  -->
-
-  <!-- Photo slides (active when loaded) -->
+  <!-- Photo background slideshow — photo1.jpg / photo2.jpg / photo3.jpg must be in same folder -->
   <div class="slide slide-1 active"></div>
   <div class="slide slide-2"></div>
   <div class="slide slide-3"></div>
-  <div class="slide slide-4"></div>
 
-  <!-- Always-visible CSS fallback scene (warehouse + truck) -->
-  <div class="hero-fallback">
-    <div class="wh-building"></div>
-    <div class="hero-ground"></div>
-    <div class="hero-road"></div>
-    <!-- Animated CSS truck driving across -->
-    <div class="hero-truck">
-      <div class="exhaust-puff"></div>
-      <div class="truck-exhaust"></div>
-      <div class="truck-trailer">
-        <div class="truck-trailer-roof"></div>
-        <div class="truck-trailer-text">SAP LOGISTICS</div>
-        <div class="truck-trailer-ribs"></div>
-      </div>
-      <div class="truck-cab">
-        <div class="truck-windshield"></div>
-        <div class="truck-grill"></div>
-        <div class="truck-headlight"></div>
-      </div>
-      <div class="truck-wheel tw1"></div>
-      <div class="truck-wheel tw2"></div>
-      <div class="truck-wheel tw3"></div>
-      <div class="truck-wheel tw4"></div>
-      <div class="truck-wheel tw5"></div>
-    </div>
-  </div>
-
+  <!-- Light overlay so text is readable over photos -->
+  <div class="hero-overlay"></div>
   <div class="hero-fade"></div>
+
   <div class="container">
     <div class="hero-c">
       <div class="hero-badge"><span class="bdot"></span><span class="btxt">Available for New Projects</span></div>
@@ -482,22 +301,16 @@ footer{background:var(--ink);color:rgba(255,255,255,.42);padding:60px 0 30px}
         <a href="#contact" class="btn btn-p">Send an Enquiry</a>
         <a href="#services" class="btn btn-o">View Services</a>
       </div>
-      <div class="hero-stats">
-        <div class="hst"><div class="hst-n">40+</div><div class="hst-l">Projects</div></div>
-        <div class="hst"><div class="hst-n">8+</div><div class="hst-l">Industries</div></div>
-        <div class="hst"><div class="hst-n">5–10</div><div class="hst-l">Years SAP</div></div>
-        <div class="hst"><div class="hst-n">98%</div><div class="hst-l">Satisfaction</div></div>
-      </div>
     </div>
   </div>
 
+  <!-- Dot controls bottom-right -->
   <div class="slide-dots">
     <div class="sdot on" onclick="goSlide(0)"></div>
     <div class="sdot" onclick="goSlide(1)"></div>
     <div class="sdot" onclick="goSlide(2)"></div>
-    <div class="sdot" onclick="goSlide(3)"></div>
   </div>
-  <div class="scene-label" id="sceneLabel">Warehouse Interior</div>
+  <div class="scene-label" id="sceneLabel">Warehouse Operations</div>
 
 </section>
 
@@ -750,7 +563,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.42);padding:60px 0 30px}
 // ── HERO PHOTO SLIDESHOW ──
 const slides = document.querySelectorAll('.slide');
 const dots   = document.querySelectorAll('.sdot');
-const sceneNames = ['Warehouse Operations','Logistics & Transport','Warehouse Facility','Warehouse Facility'];
+const sceneNames = ['Warehouse Operations','Logistics & Transport','Warehouse Facility'];
 let curSlide = 0, slideTimer;
 
 function goSlide(n){
