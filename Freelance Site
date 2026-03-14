@@ -70,19 +70,11 @@ nav.solid .ncta:hover{background:var(--blue2) !important}
 }
 .slide.active{opacity:1}
 
-/* Photo URLs — Pexels warehouse & logistics (load when hosted) */
-.slide-1{background-image:
-  linear-gradient(rgba(8,18,38,.55),rgba(8,18,38,.55)),
-  url("https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=1600");}
-.slide-2{background-image:
-  linear-gradient(rgba(8,18,38,.5),rgba(8,18,38,.5)),
-  url("https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg?auto=compress&cs=tinysrgb&w=1600");}
-.slide-3{background-image:
-  linear-gradient(rgba(8,18,38,.5),rgba(8,18,38,.5)),
-  url("https://images.pexels.com/photos/4481259/pexels-photo-4481259.jpeg?auto=compress&cs=tinysrgb&w=1600");}
-.slide-4{background-image:
-  linear-gradient(rgba(8,18,38,.5),rgba(8,18,38,.5)),
-  url("https://images.pexels.com/photos/1118448/pexels-photo-1118448.jpeg?auto=compress&cs=tinysrgb&w=1600");}
+/* Photo slides — using local photos uploaded to the repo */
+.slide-1{background-image:linear-gradient(rgba(8,18,38,.52),rgba(8,18,38,.52)),url("photo1.jpg");}
+.slide-2{background-image:linear-gradient(rgba(8,18,38,.48),rgba(8,18,38,.48)),url("photo2.jpg");}
+.slide-3{background-image:linear-gradient(rgba(8,18,38,.48),rgba(8,18,38,.48)),url("photo3.jpg");}
+.slide-4{background-image:linear-gradient(rgba(8,18,38,.48),rgba(8,18,38,.48)),url("photo3.jpg");}
 
 /* CSS fallback — beautiful gradient scene when photos can't load (local) */
 .hero-fallback{
@@ -677,7 +669,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.42);padding:60px 0 30px}
         <h3>Direct Contact &amp; Availability</h3>
         <p>Working directly with me means clear, prompt communication — no account managers in between. All enquiries are treated with full confidentiality.</p>
         <div class="ci-list">
-          <div class="ci"><div class="ci-ico">📧</div><div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:hello@yoursite.com">hello@yoursite.com</a></div></div></div>
+          <div class="ci"><div class="ci-ico">📧</div><div><div class="ci-lbl">Email</div><div class="ci-val"><a href="/cdn-cgi/l/email-protection#9ff7faf3f3f0dfe6f0eaedecf6ebfab1fcf0f2"><span class="__cf_email__" data-cfemail="f69e939a9a99b68f998384859f8293d895999b">[email&#160;protected]</span></a></div></div></div>
           <div class="ci"><div class="ci-ico">💼</div><div><div class="ci-lbl">LinkedIn</div><div class="ci-val"><a href="#">linkedin.com/in/yourprofile</a></div></div></div>
           <div class="ci"><div class="ci-ico">🌍</div><div><div class="ci-lbl">Based In</div><div class="ci-val">India — Available for European projects</div></div></div>
           <div class="ci"><div class="ci-ico">⏱️</div><div><div class="ci-lbl">Response Time</div><div class="ci-val">Within one business day</div></div></div>
@@ -748,17 +740,17 @@ footer{background:var(--ink);color:rgba(255,255,255,.42);padding:60px 0 30px}
       <div><div class="fbrand">Your Name <span>| SAP WM</span></div><p class="fdesc">Independent SAP Warehouse Management consultant. WM, EWM and S/4HANA implementations for European and global clients. Precise, well-documented solutions.</p></div>
       <div class="fcol"><h4>Services</h4><ul><li><a href="#services">WM Implementation</a></li><li><a href="#services">EWM Migration</a></li><li><a href="#services">S/4HANA Upgrade</a></li><li><a href="#services">Process Optimisation</a></li><li><a href="#services">Training &amp; Support</a></li></ul></div>
       <div class="fcol"><h4>Industries</h4><ul><li><a href="#industries">Manufacturing</a></li><li><a href="#industries">Retail &amp; FMCG</a></li><li><a href="#industries">Pharma</a></li><li><a href="#industries">Logistics &amp; 3PL</a></li><li><a href="#industries">Automotive</a></li></ul></div>
-      <div class="fcol"><h4>Quick Links</h4><ul><li><a href="#about">About</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Send Enquiry</a></li><li><a href="mailto:hello@yoursite.com">hello@yoursite.com</a></li></ul></div>
+      <div class="fcol"><h4>Quick Links</h4><ul><li><a href="#about">About</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Send Enquiry</a></li><li><a href="/cdn-cgi/l/email-protection#a8c0cdc4c4c7e8d1c7dddadbc1dccd86cbc7c5"><span class="__cf_email__" data-cfemail="09616c6565664970667c7b7a607d6c276a6664">[email&#160;protected]</span></a></li></ul></div>
     </div>
     <div class="footer-bot"><span>© 2025 Your Name. All rights reserved.</span><span>SAP Warehouse Management Consultant</span></div>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── HERO PHOTO SLIDESHOW ──
 const slides = document.querySelectorAll('.slide');
 const dots   = document.querySelectorAll('.sdot');
-const sceneNames = ['High-Bay Warehouse','Logistics & Transport','Forklift Operations','Cargo Transport'];
+const sceneNames = ['Warehouse Operations','Logistics & Transport','Warehouse Facility','Warehouse Facility'];
 let curSlide = 0, slideTimer;
 
 function goSlide(n){
@@ -798,18 +790,4 @@ function tFaq(btn){
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
-  });
-});
-
-// Google Form fallback
-setTimeout(()=>{
-  try{
-    const f=document.getElementById('gform');
-    if(!f.contentDocument||!f.contentDocument.body||f.contentDocument.body.innerHTML.trim()==='')
-      document.getElementById('gfb').style.display='block';
-  }catch(e){}
-},9000);
-</script>
-</body>
-</html>
+    if(t){e.preventDe
